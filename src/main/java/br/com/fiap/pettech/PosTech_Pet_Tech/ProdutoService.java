@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -14,22 +13,22 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository repo;
 
-    public Collection<Produto> findAll(){
+    public Collection<Produto> findAll() {
         var produtos = repo.findAll();
         return produtos;
     }
 
-    public Produto findById(UUID id){
+    public Produto findById(UUID id) {
         var produto = repo.findById(id).orElseThrow(() -> new ControllerNotFoundException("Produto não encontrado"));
         return produto;
     }
 
-    public Produto save(Produto produto){
+    public Produto save(Produto produto) {
         produto = repo.save(produto);
         return produto;
     }
 
-    public Produto update(UUID id, Produto produto){
+    public Produto update(UUID id, Produto produto) {
 
         try {
             Produto buscaProduto = repo.getOne(id);
@@ -40,13 +39,13 @@ public class ProdutoService {
             buscaProduto = repo.save(buscaProduto);
 
             return buscaProduto;
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ControllerNotFoundException("Produto não encontrado");
         }
 
     }
 
-    public void delete(UUID id){
+    public void delete(UUID id) {
         repo.deleteById(id);
     }
 }
