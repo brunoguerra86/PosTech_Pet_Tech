@@ -1,5 +1,6 @@
-package br.com.fiap.pettech.PosTech_Pet_Tech;
+package br.com.fiap.pettech.PosTech_Pet_Tech.repository;
 
+import br.com.fiap.pettech.PosTech_Pet_Tech.entities.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

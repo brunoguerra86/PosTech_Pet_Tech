@@ -1,5 +1,8 @@
-package br.com.fiap.pettech.PosTech_Pet_Tech;
+package br.com.fiap.pettech.PosTech_Pet_Tech.service;
 
+import br.com.fiap.pettech.PosTech_Pet_Tech.controller.exception.ControllerNotFoundException;
+import br.com.fiap.pettech.PosTech_Pet_Tech.entities.Produto;
+import br.com.fiap.pettech.PosTech_Pet_Tech.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
