@@ -1,6 +1,7 @@
 package br.com.fiap.pettech.PosTech_Pet_Tech.service;
 
 import br.com.fiap.pettech.PosTech_Pet_Tech.controller.exception.ControllerNotFoundException;
+import br.com.fiap.pettech.PosTech_Pet_Tech.dto.ProdutoDTO;
 import br.com.fiap.pettech.PosTech_Pet_Tech.entities.Produto;
 import br.com.fiap.pettech.PosTech_Pet_Tech.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -16,32 +18,36 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository repo;
 
-    public Collection<Produto> findAll() {
+    public Collection<ProdutoDTO> findAll() {
         var produtos = repo.findAll();
-        return produtos;
+        return produtos
+                .stream()
+                .map(this::toProdutoDTO)
+                .collect(Collectors.toList());
     }
 
-    public Produto findById(UUID id) {
+    public ProdutoDTO findById(UUID id) {
         var produto = repo.findById(id).orElseThrow(() -> new ControllerNotFoundException("Produto não encontrado"));
-        return produto;
+        return toProdutoDTO(produto);
     }
 
-    public Produto save(Produto produto) {
+    public ProdutoDTO save(ProdutoDTO produtoDTO) {
+        Produto produto = toProduto(produtoDTO);
         produto = repo.save(produto);
-        return produto;
+        return toProdutoDTO(produto);
     }
 
-    public Produto update(UUID id, Produto produto) {
+    public ProdutoDTO update(UUID id, ProdutoDTO produtoDTO) {
 
         try {
-            Produto buscaProduto = repo.getOne(id);
-            buscaProduto.setNome(produto.getNome());
-            buscaProduto.setDescricao(produto.getDescricao());
-            buscaProduto.setUrlDaImagem(produto.getUrlDaImagem());
-            buscaProduto.setPreco(produto.getPreco());
+            Produto buscaProduto = repo.getReferenceById(id);
+            buscaProduto.setNome(produtoDTO.nome());
+            buscaProduto.setDescricao(produtoDTO.descricao());
+            buscaProduto.setUrlDaImagem(produtoDTO.urlDaImagem());
+            buscaProduto.setPreco(produtoDTO.preco());
             buscaProduto = repo.save(buscaProduto);
 
-            return buscaProduto;
+            return toProdutoDTO(buscaProduto);
         } catch (EntityNotFoundException e) {
             throw new ControllerNotFoundException("Produto não encontrado");
         }
@@ -50,5 +56,25 @@ public class ProdutoService {
 
     public void delete(UUID id) {
         repo.deleteById(id);
+    }
+
+    private ProdutoDTO toProdutoDTO(Produto produto) {
+        return new ProdutoDTO(
+                produto.getId(),
+                produto.getNome(),
+                produto.getDescricao(),
+                produto.getPreco(),
+                produto.getUrlDaImagem()
+        );
+    }
+
+    private Produto toProduto(ProdutoDTO produtoDTO){
+        return new Produto(
+                produtoDTO.id(),
+                produtoDTO.nome(),
+                produtoDTO.descricao(),
+                produtoDTO.preco(),
+                produtoDTO.urlDaImagem()
+        );
     }
 }

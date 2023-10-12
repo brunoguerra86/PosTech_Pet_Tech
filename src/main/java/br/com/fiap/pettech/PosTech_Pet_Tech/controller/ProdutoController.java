@@ -1,5 +1,6 @@
 package br.com.fiap.pettech.PosTech_Pet_Tech.controller;
 
+import br.com.fiap.pettech.PosTech_Pet_Tech.dto.ProdutoDTO;
 import br.com.fiap.pettech.PosTech_Pet_Tech.entities.Produto;
 import br.com.fiap.pettech.PosTech_Pet_Tech.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +19,21 @@ public class ProdutoController {
     private ProdutoService service;
 
     @GetMapping
-    public ResponseEntity<Collection<Produto>> findAll(){
+    public ResponseEntity<Collection<ProdutoDTO>> findAll(){
         var produtos = service.findAll();
         return ResponseEntity.ok(produtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> findById(@PathVariable UUID id){
+    public ResponseEntity<ProdutoDTO> findById(@PathVariable UUID id){
         var produto = service.findById(id);
         return ResponseEntity.ok(produto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> update (@PathVariable UUID id, @RequestBody Produto produto){
-        produto = service.update(id,produto);
-        return ResponseEntity.ok(produto);
+    public ResponseEntity<ProdutoDTO> update (@PathVariable UUID id, @RequestBody ProdutoDTO produtoDTO){
+        produtoDTO = service.update(id,produtoDTO);
+        return ResponseEntity.ok(produtoDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -42,8 +43,8 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> save(@RequestBody Produto produto){
-        produto = service.save(produto);
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(produto);
+    public ResponseEntity<ProdutoDTO> save(@RequestBody ProdutoDTO produtoDTO){
+        produtoDTO = service.save(produtoDTO);
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(produtoDTO);
     }
 }
