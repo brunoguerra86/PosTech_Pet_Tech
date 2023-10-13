@@ -1,7 +1,6 @@
 package br.com.fiap.pettech.PosTech_Pet_Tech.controller;
 
 import br.com.fiap.pettech.PosTech_Pet_Tech.dto.ProdutoDTO;
-import br.com.fiap.pettech.PosTech_Pet_Tech.entities.Produto;
 import br.com.fiap.pettech.PosTech_Pet_Tech.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
